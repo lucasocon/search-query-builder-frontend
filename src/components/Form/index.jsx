@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import SearchQueryBuilder from "search-query-builder";
 
 import FetchService from "../../services/fetch.service";
 import Table from "../Table";
 
 export default function BuilderForm() {
+  const [skillsOptions, setSkillsOptions] = useState([]);
+  const [experienceOptions, setExperienceOptions] = useState([]);
+  const [seniorityOptions, setSeniorityOptions] = useState([]);
+  const [positionOptions, setPositionOptions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
+  useEffect( () => {
+    fetchSearchOptions();
+  }, []);
+
+  const fetchSearchOptions = async () => {
+    const { skills, experience, seniorities, positions} = await FetchService.getOptions();
+    
+    setSkillsOptions(skills);
+    setExperienceOptions(experience);
+    setSeniorityOptions(seniorities);
+    setPositionOptions(positions);
+  }
   const theme = {
     primaryColor: "purple",
     secondaryColor: "black",
@@ -44,15 +60,15 @@ export default function BuilderForm() {
       },
       skills: {
         type: "name",
-        items: [{ name: "NodeJS" }, { name: "ReactJS" }],
+        items: skillsOptions.map((skill) => ({ name: skill })),
       },
       yoe: {
         type: "experience",
-        items: [{ name: 1 }, { name: 3 }, { name: 5 }],
+        items: experienceOptions.map((exp) => ({ name: exp })),
       },
       seniority: {
         type: "seniority",
-        items: [{ name: "Junior" }, { name: "Mid" }, { name: "Senior" }],
+        items: seniorityOptions.map((seniority) => ({ name: seniority })),
       },
     },
     Position: {
@@ -61,8 +77,8 @@ export default function BuilderForm() {
         items: [{ name: "equal" }, { name: "not equal" }],
       },
       positions: {
-        type: "positions",
-        items: [{ name: "Frontend Developer" }, { name: "Backend Developer" }],
+        type: "name",
+        items: positionOptions.map((position) => ({ name: position })),
       },
     },
   };
