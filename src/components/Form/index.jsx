@@ -53,34 +53,57 @@ export default function BuilderForm() {
   };
 
   const mainConfig = {
-    Skill: {
-      operators: {
-        type: "operator",
-        items: [{ name: "equal" }, { name: "not equal" }],
+    Skills: [
+      {
+        placeholder: 'Operator',
+        key: 'operator',
+        type: 'select',
+        items: [
+          { name: "equal" }, { name: "not equal" }
+        ],
       },
-      skills: {
-        type: "name",
+      {
+        placeholder: 'Skill',
+        key: 'name',
+        type: 'select',
         items: skillsOptions.map((skill) => ({ name: skill })),
       },
-      yoe: {
-        type: "experience",
+      {
+        placeholder: 'Experience',
+        key: 'experience',
+        type: 'select',
         items: experienceOptions.map((exp) => ({ name: exp })),
       },
-      seniority: {
-        type: "seniority",
+      {
+        placeholder: 'Seniority',
+        key: 'seniority',
+        type: 'select',
         items: seniorityOptions.map((seniority) => ({ name: seniority })),
       },
-    },
-    Position: {
-      operators: {
-        type: "operator",
-        items: [{ name: "equal" }, { name: "not equal" }],
+      { // Add "lastWorkedAt" details
+        placeholder: 'Last worked date',
+        key: 'lastWorkedAt',
+        type: 'date',
+        priority: 'not_required',
+        format: 'DD-MM-YYYY'
       },
-      positions: {
-        type: "name",
+    ],
+    Positions: [
+      {
+        placeholder: 'Operator',
+        key: 'operator',
+        type: 'select',
+        items: [
+          { name: "equal" }, { name: "not equal" }
+        ],
+      },
+      {
+        placeholder: 'Position',
+        key: 'name',
+        type: 'select',
         items: positionOptions.map((position) => ({ name: position })),
       },
-    },
+    ]
   };
 
   const conditions = ["AND", "OR"];
@@ -105,7 +128,7 @@ export default function BuilderForm() {
         conditions={conditions}
         defaultSelectedConditionIndex={0}
         outputType={outputType}
-        onSubmitted={handleSubmit}
+        onSubmit={handleSubmit}
       />
       <Table results={searchResults} />
     </div>
